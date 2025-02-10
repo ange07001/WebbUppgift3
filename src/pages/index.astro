@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SnakeImg from '../assets/snake.png'
 import BombImg from '../assets/bomb.png'
+import { Image } from 'astro:assets';
 ---
 
 <Layout>
@@ -22,7 +23,7 @@ import BombImg from '../assets/bomb.png'
 				</div>
 				<div class="column is-6 has-text-centered">
 					<a href="">
-							<img src={BombImg.src} alt="">
+							<img src={BombImg.src} alt="" />
 						<h1>
 							<strong>Minesweeper</strong>
 						</h1>
@@ -68,7 +69,7 @@ import BombImg from '../assets/bomb.png'
 		font-weight: bold;
 	}
 
-	.games img{
+	.games img {
 		height: 50%;
 	}
 </style>
