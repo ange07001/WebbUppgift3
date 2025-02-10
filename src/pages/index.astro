@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Logo from '../assets/game.png'
+import SnakeImg from '../assets/snake.png'
+import BombImg from '../assets/bomb.png'
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
@@ -13,18 +14,21 @@ import Logo from '../assets/game.png'
 		<div class="section">
 			<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste aspernatur perspiciatis minus, consequatur tempore labore ratione facilis, incidunt, magni similique doloremque magnam! Vel quaerat adipisci voluptas! Corporis saepe quaerat doloribus repellat veritatis necessitatibus. Qui cupiditate nulla dolorum, voluptates, laborum placeat necessitatibus iusto magni dignissimos tempore distinctio enim aliquid nesciunt. Ex.</p>
 		</div>
-		<div class="section">
+		<div class="section games">
 			<div class="columns is-multiline">
-				<div class="column is-6">
-					<h1 class="has-text-centered">
-						Snake
-					</h1>
+				<div class="column is-6 has-text-centered">
+					<a href=""><img src={SnakeImg.src} alt="">
+						<h1>
+							<strong>Snake</strong>
+						</h1></a>
 				</div>
-				<div class="column is-6">
-					<img class="has-text-centered" src={Logo.src} alt="">
-					<h1 class="has-text-centered">
-						Minesweeper
-					</h1>
+				<div class="column is-6 has-text-centered">
+					<a href="">
+						<img src={BombImg.src} alt="">
+						<h1>
+							<strong>Minesweeper</strong>
+						</h1>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -36,5 +40,9 @@ import Logo from '../assets/game.png'
 		color: red;
 		font-size: x-large;
 		font-weight: bold;
+	}
+
+	.games img{
+		height: 50%;
 	}
 </style>
