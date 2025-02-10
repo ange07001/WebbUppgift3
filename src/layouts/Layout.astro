@@ -1,18 +1,26 @@
+---
+import GameImage from '../assets/game.png'
+import Nav from '../components/nav.astro'
+import Footer from '../components/footer.astro'
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href={GameImage.src} />
 		<link
 		rel="stylesheet"
 		href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		>
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>SIGMA GAMES</title>
 	</head>
 	<body>
+		<Nav/>
 		<slot />
+		<Footer/>
 	</body>
 </html>
 

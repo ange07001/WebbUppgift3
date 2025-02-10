@@ -1,10 +1,40 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Nav from '../components/nav.astro'
+import Logo from '../assets/game.png'
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Nav/>
+	<div class="container">
+		<header class="header mt-5">
+			<h1 class="has-text-centered">Welcome to Sigma Games</h1>
+		</header>
+		<div class="section">
+			<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste aspernatur perspiciatis minus, consequatur tempore labore ratione facilis, incidunt, magni similique doloremque magnam! Vel quaerat adipisci voluptas! Corporis saepe quaerat doloribus repellat veritatis necessitatibus. Qui cupiditate nulla dolorum, voluptates, laborum placeat necessitatibus iusto magni dignissimos tempore distinctio enim aliquid nesciunt. Ex.</p>
+		</div>
+		<div class="section">
+			<div class="columns is-multiline">
+				<div class="column is-6">
+					<h1 class="has-text-centered">
+						Snake
+					</h1>
+				</div>
+				<div class="column is-6">
+					<img class="has-text-centered" src={Logo.src} alt="">
+					<h1 class="has-text-centered">
+						Minesweeper
+					</h1>
+				</div>
+			</div>
+		</div>
+	</div>
 </Layout>
+
+<style>
+	header h1{
+		color: red;
+		font-size: x-large;
+		font-weight: bold;
+	}
+</style>
