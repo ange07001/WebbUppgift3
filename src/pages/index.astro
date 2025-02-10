@@ -2,14 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import SnakeImg from '../assets/snake.png'
 import BombImg from '../assets/bomb.png'
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
 	<div class="container">
 		<header class="header mt-5">
-			<h1 class="has-text-centered">Welcome to Sigma Games</h1>
+			<h1 class="title has-text-centered">Welcome to Sigma Games</h1>
 		</header>
 		<div class="section">
 			<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste aspernatur perspiciatis minus, consequatur tempore labore ratione facilis, incidunt, magni similique doloremque magnam! Vel quaerat adipisci voluptas! Corporis saepe quaerat doloribus repellat veritatis necessitatibus. Qui cupiditate nulla dolorum, voluptates, laborum placeat necessitatibus iusto magni dignissimos tempore distinctio enim aliquid nesciunt. Ex.</p>
@@ -34,8 +32,11 @@ import BombImg from '../assets/bomb.png'
 		</div>
 
 		<div class="section news">
+			<div class="section">
+				<h1 class="has-text-centered NewsHeader">News</h1>
+			</div>
 			<div class="columns">
-				<div class="column is-4 card">
+				<div class="column is-5 card">
 					<div class="card-image">
 						<figure class="image">
 							<img src={SnakeImg.src} alt="">
@@ -47,6 +48,9 @@ import BombImg from '../assets/bomb.png'
 							<p class="title is-4">Snake is here!</p>
 							<p class="subtitle is-6">Snake is now on SIGMA GAMES play it <a href="">here!</a></p>
 						</div>
+						<div class="content mt-3">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis nisi laudantium eos sit magni ex.</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -57,6 +61,9 @@ import BombImg from '../assets/bomb.png'
 <style>
 	header h1{
 		color: red;
+	}
+
+	.NewsHeader {
 		font-size: x-large;
 		font-weight: bold;
 	}
