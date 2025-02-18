@@ -22,7 +22,7 @@ import GameImage from '../assets/game.png'
                     <a class="navbar-item" href="/snake">Snake</a>
                     <a class="navbar-item" href="/minesweeper">Minesweeper</a>
                     <hr class="navbar-divider">
-                    <a class="navbar-item" href="/report">Report issue</a>
+                    <a class="navbar-item" id="report-button">Report issue</a>
                 </div>
             </div>
             <a class="navbar-item" href="/leaderboard">Leaderboard</a>
@@ -34,6 +34,9 @@ import GameImage from '../assets/game.png'
             </div>
         </div>
     </div>
+
+
+    <!-- News modal -->
     <div class="modal" id="news-modal">
         <div class="modal-background" id="news-modal-background"></div>
         <div class="modal-content py-5 px-5 has-background">
@@ -41,20 +44,26 @@ import GameImage from '../assets/game.png'
             <form>
                 <div class="field">
                     <label class="label">Name</label>
-                    <div class="control">
-                        <input type="text" class="input" placeholder="Anders Andersson">
+                    <div class="control has-icons-left">
+                        <input type="text" class="input" placeholder="Anders Andersson" required>
+                        <span class="icon is-left is-small">
+                            <i class="material-icons">person</i>
+                        </span>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">Email</label>
-                    <div class="control">
-                        <input type="email" class="input" name="Email" placeholder="anders.andersson@sigma.com">
+                    <div class="control has-icons-left">
+                        <input type="email" class="input" name="Email" placeholder="anders.andersson@sigma.com" required>
+                        <span class="icon is-left is-small">
+                            <i class="material-icons">email</i>
+                        </span>
                     </div>
                 </div>
                 <div class="field">
-                    <div class="control">
+                    <div class="control has-text-centered">
                         <label class="checkbox">
-                            <input type="checkbox">
+                            <input type="checkbox" required>
                             I agree to the <a href="">terms & conditions</a>.
                         </label>
                     </div>
@@ -65,6 +74,53 @@ import GameImage from '../assets/game.png'
             </form>
         </div>
     </div>
+
+    <!-- Report issue modal -->
+    <div class="modal" id="report-modal">
+        <div class="modal-background" id="report-modal-background"></div>
+        <div class="modal-content py-5 px-5 has-background">
+            <h3 class="title has-text-centered">Report an issue</h3>
+            <form>
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control has-icons-left">
+                        <input type="text" class="input" placeholder="Anders Andersson">
+                        <span class="icon is-small is-left">
+                            <i class="material-icons">person</i>
+                        </span>
+                    </div>
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left">
+                            <input type="email" class="input " name="Email" placeholder="anders.andersson@sigma.com" required>
+                            <span class="icon is-small is-left">
+                                <i class="material-icons">email</i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Describe the issue</label>
+                        <div class="control">
+                            <textarea class="textarea" required></textarea>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control has-text-centered">
+                            <label class="checkbox">
+                                <input type="checkbox" required>
+                                I agree to the <a href="">terms & conditions</a>.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-6 has-text-centered">
+                        <button class="button" id="news-sign-up-button">Report issue</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </nav>
 
 <style>
@@ -87,7 +143,7 @@ import GameImage from '../assets/game.png'
         navbarMenu?.classList.toggle('is-active')
     })
 
-    //Modal toggle
+    // News modal toggle
     const newsButton = document.querySelector('#news-button')
     const newsModal = document.querySelector('#news-modal')
     const newsModalBackground = document.querySelector('#news-modal-background')
@@ -98,5 +154,18 @@ import GameImage from '../assets/game.png'
     
     newsModalBackground?.addEventListener('click', () => {
         newsModal?.classList.remove('is-active')
+    })
+
+    // Report modal toggle
+    const reportButton = document.querySelector('#report-button')
+    const reportModal = document.querySelector('#report-modal')
+    const reportModalBackground = document.querySelector('#report-modal-background')
+
+    reportButton?.addEventListener('click', () => {
+        reportModal?.classList.add('is-active')
+    })
+
+    reportModalBackground?.addEventListener('click', () => {
+        reportModal?.classList.remove('is-active')
     })
 </script>
