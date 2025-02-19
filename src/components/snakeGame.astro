@@ -1,0 +1,236 @@
+---
+
+---
+
+<div class="container is-flex is-flex-direction-column py-6" id="snake-game-container">
+    <canvas class="is-justify-self-center is-align-self-center" id="snake-game-board" width="500px" height="500px" style="border: 3px solid;;"></canvas>
+    <h3 class="title has-text-centered is-2 mt-3" id="snake-score-text">Score: 0</h3>
+    <button class="button has-text-centered has-color-white has-background-primary is-large is-align-self-center" id="snake-reset-button">Reset</button>
+    <div class="modal" id="snake-modal">
+        <div class="modal-background" id="snake-modal-background"></div>
+        <div class="modal-content py-5 px-5 has-background">
+            <h3 class="title has-text-centered has-text-primary is-2 mt-6">GAME OVER!</h3>
+            <p class="has-text-centered title is-4 mb-6" id="snake-final-score-text"></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-content{
+        border-radius: 10px;
+    }
+</style>
+
+
+<script>
+    const gameBoard = document.querySelector('#snake-game-board');
+    if (!(gameBoard instanceof HTMLCanvasElement)) {
+        throw new Error("Game board not found");
+    }
+    const ctx = gameBoard.getContext("2d");
+    const scoreText = document.querySelector('#snake-score-text');
+    const resetButton = document.querySelector('#snake-reset-button');
+    const gameWidth = gameBoard.width;
+    const gameHeight = gameBoard.height;
+    const boardLightBackground = "#A7D948"; // Soft Green  
+    const boardDarkBackground = "#8ECC39"; // Deeper Green  
+    const snakeBorder = "black";
+    const snakeColor = "rgb(68, 68, 214)";
+    const foodColor = "red";
+    const unitSize = 25;
+    let running = false;
+    let xVel = unitSize
+    let yVel = 0;
+    let foodX: number;
+    let foodY: number;
+    let score = 0;
+    let snake = [
+        {x:unitSize * 2, y:0},
+        {x:unitSize, y:0},
+        {x:0, y:0}
+    ];
+    let tickSpeed = 100;
+
+
+    //Snake modal
+    const snakeModal = document.querySelector('#snake-modal');
+    const snakeModalBackground = document.querySelector('#snake-modal-background');
+    const snakeModalScore = document.querySelector('#snake-final-score-text');
+
+    function gameStart(){
+        running = true;
+        if(scoreText){
+            scoreText.textContent = "Score: " + score;
+        };
+
+        createFood();
+        paintFood();
+        nextTick();
+    };
+
+    function nextTick(){
+        if(running){
+                paintBoard();
+                paintFood();
+                moveSnake();
+                paintSnake();
+                checkGameOver();
+                setTimeout(() => requestAnimationFrame(nextTick), tickSpeed);
+        }
+        else {
+            displayGameOver();
+        };
+    };
+
+    function paintBoard() {
+        if (ctx) {
+            for (let j = 0; j < gameHeight / unitSize; j++) {
+                for (let i = 0; i < gameWidth / unitSize; i++) {
+                    
+                    ctx.fillStyle = (i + j) % 2 === 0 ? boardLightBackground : boardDarkBackground;
+                    ctx.fillRect(i * unitSize, j * unitSize, unitSize, unitSize);
+                };
+            };
+        };
+    };
+
+
+    function createFood(){
+        function randFood(min: number, max: number){
+            const num = Math.round((Math.random() * (max - min) + min) / unitSize) * unitSize;
+            return num;
+        };
+
+        
+        foodX = randFood(0, gameWidth - unitSize);
+        foodY = randFood(0, gameHeight - unitSize);
+    };
+    function paintFood(){
+        if (ctx) {
+            ctx.fillStyle = foodColor;
+            ctx.fillRect(foodX, foodY, unitSize, unitSize);
+        };
+    };
+    function moveSnake(){
+    const snakeHead = {
+        x: snake[0].x + xVel,
+        y: snake[0].y + yVel,
+    };
+
+    snake.unshift(snakeHead);
+
+    if(snake[0].x == foodX && snake[0].y == foodY){
+        score++
+        if(scoreText){
+                scoreText.textContent = "Score: " + score
+            };
+            createFood();
+        }
+        else {
+            snake.pop();
+        };
+    };
+    function paintSnake(){
+        if(ctx){
+            ctx.fillStyle = snakeColor;
+            ctx.strokeStyle = snakeBorder;
+            snake.forEach(snakePart => {
+                ctx.fillRect(snakePart.x, snakePart.y, unitSize, unitSize);
+                ctx.strokeRect(snakePart.x, snakePart.y, unitSize, unitSize);
+            });
+        };
+    };
+    function changeDirection(event: KeyboardEvent){
+        const keyPress = event.code;
+        const leftKey = "ArrowLeft";
+        const upKey = "ArrowUp";
+        const rightKey = "ArrowRight";
+        const downKey = "ArrowDown";
+
+        const goingLeft = (xVel == -unitSize);
+        const goingUp = (yVel == -unitSize);
+        const goingRight = (xVel == unitSize);
+        const goingDown = (yVel == unitSize);
+
+        switch(true){
+            case(keyPress == leftKey && !goingRight):
+                xVel = -unitSize;
+                yVel = 0;
+                break;
+
+            case(keyPress == upKey && !goingDown):
+                xVel = 0;
+                yVel = -unitSize;
+                break;
+
+            case(keyPress == rightKey && !goingLeft):
+                xVel = unitSize;
+                yVel = 0;
+                break;
+                
+            case(keyPress == downKey && !goingUp):
+                xVel = 0;
+                yVel = unitSize;
+                break;
+        };
+    };
+    function checkGameOver(){
+        switch(true){
+            case(snake[0].x < 0):
+                running = false;
+                break;
+
+            case(snake[0].x >= gameWidth):
+                running = false;
+                break;
+
+            case(snake[0].y < 0):
+                running = false;
+                break;
+
+            case(snake[0].y >= gameHeight):
+                running = false;
+                break;
+        };
+
+        for(let i = 1; i < snake.length; i++){
+            if(snake[i].x == snake[0].x && snake[i].y == snake[0].y){
+                running = false;
+                break;
+            };
+        };
+    };
+    function displayGameOver(){
+        snakeModal?.classList.add('is-active');
+        if(snakeModalScore){
+            snakeModalScore.textContent = "Your score: " + score + " points."
+        };
+
+    
+    running = false;
+    };
+    function resetGame(){
+        score = 0;
+        xVel = unitSize;
+        yVel = 0;
+        snake = [
+            {x:unitSize * 2, y:0},
+            {x:unitSize, y:0},
+            {x:0, y:0}
+        ];
+        if(!running){
+            gameStart();
+        };
+    };
+
+    window.addEventListener('keydown', changeDirection);
+    resetButton?.addEventListener('click', resetGame);
+
+    gameStart();
+
+
+    //Remove game over modal
+    snakeModalBackground?.addEventListener('click', () =>{
+        snakeModal?.classList.remove('is-active')
+    })
+</script>

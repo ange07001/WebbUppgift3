@@ -30,7 +30,7 @@ import GameImage from '../assets/game.png'
         </div>
         <div class="navbar-end">
             <div class="navbar-item">
-                <a class="button"  id="news-button">News</a>
+                <button class="button has-color-white has-background-primary"  id="news-button">News</button>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@ import GameImage from '../assets/game.png'
             <h3 class="title has-text-centered">Sign up for Newsletter</h3>
             <form>
                 <div class="field">
-                    <label class="label">Name</label>
+                    <label class="label required">Name</label>
                     <div class="control has-icons-left">
                         <input type="text" class="input" placeholder="Anders Andersson" required>
                         <span class="icon is-left is-small">
@@ -52,7 +52,7 @@ import GameImage from '../assets/game.png'
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">Email</label>
+                    <label class="label required">Email</label>
                     <div class="control has-icons-left">
                         <input type="email" class="input" name="Email" placeholder="anders.andersson@sigma.com" required>
                         <span class="icon is-left is-small">
@@ -69,7 +69,7 @@ import GameImage from '../assets/game.png'
                     </div>
                 </div>
                 <div class="mt-6 has-text-centered">
-                    <button class="button" id="news-sign-up-button">Sign up</button>
+                    <button class="button has-color-white has-background-primary" id="news-sign-up-button">Sign up</button>
                 </div>
             </form>
         </div>
@@ -90,7 +90,7 @@ import GameImage from '../assets/game.png'
                         </span>
                     </div>
                     <div class="field">
-                        <label class="label">Email</label>
+                        <label class="label required">Email</label>
                         <div class="control has-icons-left">
                             <input type="email" class="input " name="Email" placeholder="anders.andersson@sigma.com" required>
                             <span class="icon is-small is-left">
@@ -99,7 +99,21 @@ import GameImage from '../assets/game.png'
                         </div>
                     </div>
                     <div class="field">
-                        <label class="label">Describe the issue</label>
+                        <label class="label required">What do you have a problem with?</label>
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option>Select option</option>
+                                    <option value="Snake">Snake</option>
+                                    <option value="Minesweeper">Minesweeper</option>
+                                    <option value="Website">Website</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label required">Describe the issue</label>
                         <div class="control">
                             <textarea class="textarea" required></textarea>
                         </div>
@@ -113,7 +127,7 @@ import GameImage from '../assets/game.png'
                         </div>
                     </div>
                     <div class="mt-6 has-text-centered">
-                        <button class="button" id="news-sign-up-button">Report issue</button>
+                        <button class="button has-color-white has-background-primary" id="news-sign-up-button">Report issue</button>
                     </div>
                 </div>
             </form>
@@ -124,48 +138,47 @@ import GameImage from '../assets/game.png'
 </nav>
 
 <style>
-    #news-button, #news-sign-up-button{
-        background-color: red;
-        color: white;
-    }
-
     .modal-content{
         border-radius: 10px;
     }
-</style>
 
+    .label.required::after{
+        content: " *";
+        color: red;
+    }
+</style>
 <script>
     // Mobile menu toggle
-    const burgerIcon = document.querySelector('#burger')
-    const navbarMenu = document.querySelector('#nav-links')
-    
+    const burgerIcon = document.querySelector('#burger');
+    const navbarMenu = document.querySelector('#nav-links');
+
     burgerIcon?.addEventListener('click', () => {
-        navbarMenu?.classList.toggle('is-active')
-    })
+        navbarMenu?.classList.toggle('is-active');
+    });
 
     // News modal toggle
-    const newsButton = document.querySelector('#news-button')
-    const newsModal = document.querySelector('#news-modal')
-    const newsModalBackground = document.querySelector('#news-modal-background')
+    const newsButton = document.querySelector('#news-button');
+    const newsModal = document.querySelector('#news-modal');
+    const newsModalBackground = document.querySelector('#news-modal-background');
 
     newsButton?.addEventListener('click', () => {
-        newsModal?.classList.add('is-active')
-    })
+        newsModal?.classList.add('is-active');
+    });
     
     newsModalBackground?.addEventListener('click', () => {
-        newsModal?.classList.remove('is-active')
-    })
+        newsModal?.classList.remove('is-active');
+    });
 
     // Report modal toggle
-    const reportButton = document.querySelector('#report-button')
-    const reportModal = document.querySelector('#report-modal')
-    const reportModalBackground = document.querySelector('#report-modal-background')
+    const reportButton = document.querySelector('#report-button');
+    const reportModal = document.querySelector('#report-modal');
+    const reportModalBackground = document.querySelector('#report-modal-background');
 
     reportButton?.addEventListener('click', () => {
-        reportModal?.classList.add('is-active')
-    })
+        reportModal?.classList.add('is-active');
+    });
 
     reportModalBackground?.addEventListener('click', () => {
-        reportModal?.classList.remove('is-active')
-    })
+        reportModal?.classList.remove('is-active');
+    });
 </script>
