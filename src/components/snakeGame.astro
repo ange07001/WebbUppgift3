@@ -4,7 +4,8 @@
 
 <div
     class="container is-flex is-flex-direction-column py-6"
-    id="snake-game-container">
+    id="snake-game-container"
+>
     <canvas
         class="is-justify-self-center is-align-self-center"
         id="snake-game-board"
@@ -49,9 +50,9 @@
     const gameWidth = gameBoard.width;
     const gameHeight = gameBoard.height;
     const boardLightBackground = "#A7D948"; // Soft Green
-    const boardDarkBackground = "#8ECC39"; // Deeper Green
+    const boardDarkBackground = "#8ECC39"; // Deep Green
     const snakeBorder = "black";
-    const snakeColor = "rgb(68, 68, 214)";
+    const snakeColor = "rgb(68, 68, 214)"; // Blue
     const foodColor = "red";
     const unitSize = 25;
     let running = false;
@@ -66,6 +67,7 @@
         { x: 0, y: 0 },
     ];
     let tickSpeed = 150;
+    let directionChanged = false;
 
     //Snake modal
     const snakeModal = document.querySelector("#snake-modal");
@@ -86,8 +88,8 @@
     function nextTick() {
         if (running) {
             paintBoard();
-            paintFood();
             moveSnake();
+            paintFood();
             paintSnake();
             checkGameOver();
             setTimeout(() => requestAnimationFrame(nextTick), tickSpeed);
@@ -115,10 +117,13 @@
                 unitSize;
             return num;
         }
-
-        foodX = randFood(0, gameWidth - unitSize);
-        foodY = randFood(0, gameHeight - unitSize);
-    }
+        
+        do {
+            foodX = randFood(0, gameWidth - unitSize);
+            foodY = randFood(0, gameHeight - unitSize);
+        } while (snake.some(part => part.x === foodX && part.y === foodY));
+        
+    }   
     function paintFood() {
         ctx.fillStyle = foodColor;
         ctx.fillRect(foodX, foodY, unitSize, unitSize);
@@ -131,13 +136,15 @@
 
         snake.unshift(snakeHead);
 
-        if (snake[0].x == foodX && snake[0].y == foodY) {
+        if (snake[0].x === foodX && snake[0].y === foodY) {
             score++;
             scoreText.textContent = "Score: " + score;
             createFood();
         } else {
             snake.pop();
         }
+
+        directionChanged = false;
     }
     function paintSnake() {
         ctx.fillStyle = snakeColor;
@@ -149,36 +156,42 @@
     }
     function changeDirection(event: KeyboardEvent) {
         event.preventDefault();
+        if (directionChanged) return;
+
         const keyPress = event.code;
         const leftKey = "ArrowLeft";
         const upKey = "ArrowUp";
         const rightKey = "ArrowRight";
         const downKey = "ArrowDown";
 
-        const goingLeft = xVel == -unitSize;
-        const goingUp = yVel == -unitSize;
-        const goingRight = xVel == unitSize;
-        const goingDown = yVel == unitSize;
+        const goingLeft = xVel === -unitSize;
+        const goingUp = yVel === -unitSize;
+        const goingRight = xVel === unitSize;
+        const goingDown = yVel === unitSize;
 
         switch (true) {
-            case keyPress == leftKey && !goingRight:
+            case keyPress === leftKey && !goingRight:
                 xVel = -unitSize;
                 yVel = 0;
+                directionChanged = true;
                 break;
 
-            case keyPress == upKey && !goingDown:
+            case keyPress === upKey && !goingDown:
                 xVel = 0;
                 yVel = -unitSize;
+                directionChanged = true;
                 break;
 
-            case keyPress == rightKey && !goingLeft:
+            case keyPress === rightKey && !goingLeft:
                 xVel = unitSize;
                 yVel = 0;
+                directionChanged = true;
                 break;
 
-            case keyPress == downKey && !goingUp:
+            case keyPress === downKey && !goingUp:
                 xVel = 0;
                 yVel = unitSize;
+                directionChanged = true;
                 break;
         }
     }
@@ -210,7 +223,7 @@
     }
     function displayGameOver() {
         snakeModal?.classList.add("is-active");
-        
+
         snakeModalScore.textContent = "Your score: " + score + " points.";
         running = false;
     }
