@@ -1,11 +1,11 @@
 ---
-import GameImage from '../assets/game.png'
+import GameImage from "../assets/game.png";
 ---
 
 <nav class="navbar has-shadow">
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
-            <img src={GameImage.src} alt="" style="max-height: 50px;">
+            <img src={GameImage.src} alt="" style="max-height: 50px;" />
         </a>
         <a class="navbar-burger" id="burger">
             <span></span>
@@ -21,7 +21,7 @@ import GameImage from '../assets/game.png'
                 <div class="navbar-dropdown">
                     <a class="navbar-item" href="/snake">Snake</a>
                     <a class="navbar-item" href="/minesweeper">Minesweeper</a>
-                    <hr class="navbar-divider">
+                    <hr class="navbar-divider" />
                     <a class="navbar-item" id="report-button">Report issue</a>
                 </div>
             </div>
@@ -30,11 +30,21 @@ import GameImage from '../assets/game.png'
         </div>
         <div class="navbar-end">
             <div class="navbar-item">
-                <button class="button has-color-white has-background-primary"  id="news-button">News</button>
+                <i class="material-icons" id="slider-icon">dark_mode</i>
+                <label class="toggle">
+                    <input type="checkbox" placeholder="" />
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="navbar-item">
+                <button
+                    class="button has-color-white has-background-primary"
+                    id="news-button">News</button
+                >
             </div>
         </div>
     </div>
-
 
     <!-- News modal -->
     <div class="modal" id="news-modal">
@@ -45,7 +55,12 @@ import GameImage from '../assets/game.png'
                 <div class="field">
                     <label class="label required">Name</label>
                     <div class="control has-icons-left">
-                        <input type="text" class="input" placeholder="Anders Andersson" required>
+                        <input
+                            type="text"
+                            class="input"
+                            placeholder="Anders Andersson"
+                            required
+                        />
                         <span class="icon is-left is-small">
                             <i class="material-icons">person</i>
                         </span>
@@ -54,7 +69,13 @@ import GameImage from '../assets/game.png'
                 <div class="field">
                     <label class="label required">Email</label>
                     <div class="control has-icons-left">
-                        <input type="email" class="input" name="Email" placeholder="anders.andersson@sigma.com" required>
+                        <input
+                            type="email"
+                            class="input"
+                            name="Email"
+                            placeholder="anders.andersson@sigma.com"
+                            required
+                        />
                         <span class="icon is-left is-small">
                             <i class="material-icons">email</i>
                         </span>
@@ -63,13 +84,16 @@ import GameImage from '../assets/game.png'
                 <div class="field">
                     <div class="control has-text-centered">
                         <label class="checkbox">
-                            <input type="checkbox" required>
+                            <input type="checkbox" required />
                             I agree to the <a href="">terms & conditions</a>.
                         </label>
                     </div>
                 </div>
                 <div class="mt-6 has-text-centered">
-                    <button class="button has-color-white has-background-primary" id="news-sign-up-button">Sign up</button>
+                    <button
+                        class="button has-color-white has-background-primary"
+                        id="news-sign-up-button">Sign up</button
+                    >
                 </div>
             </form>
         </div>
@@ -84,7 +108,11 @@ import GameImage from '../assets/game.png'
                 <div class="field">
                     <label class="label">Name</label>
                     <div class="control has-icons-left">
-                        <input type="text" class="input" placeholder="Anders Andersson">
+                        <input
+                            type="text"
+                            class="input"
+                            placeholder="Anders Andersson"
+                        />
                         <span class="icon is-small is-left">
                             <i class="material-icons">person</i>
                         </span>
@@ -92,26 +120,36 @@ import GameImage from '../assets/game.png'
                     <div class="field">
                         <label class="label required">Email</label>
                         <div class="control has-icons-left">
-                            <input type="email" class="input " name="Email" placeholder="anders.andersson@sigma.com" required>
+                            <input
+                                type="email"
+                                class="input"
+                                name="Email"
+                                placeholder="anders.andersson@sigma.com"
+                                required
+                            />
                             <span class="icon is-small is-left">
                                 <i class="material-icons">email</i>
                             </span>
                         </div>
                     </div>
                     <div class="field">
-                        <label class="label required">What do you have a problem with?</label>
+                        <label class="label required"
+                            >What do you have a problem with?</label
+                        >
                         <div class="control">
                             <div class="select">
                                 <select>
                                     <option>Select option</option>
                                     <option value="Snake">Snake</option>
-                                    <option value="Minesweeper">Minesweeper</option>
+                                    <option value="Minesweeper"
+                                        >Minesweeper</option
+                                    >
                                     <option value="Website">Website</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="field">
                         <label class="label required">Describe the issue</label>
                         <div class="control">
@@ -121,65 +159,152 @@ import GameImage from '../assets/game.png'
                     <div class="field">
                         <div class="control has-text-centered">
                             <label class="checkbox">
-                                <input type="checkbox" required>
-                                I agree to the <a href="">terms & conditions</a>.
+                                <input type="checkbox" required />
+                                I agree to the <a href="">terms & conditions</a
+                                >.
                             </label>
                         </div>
                     </div>
                     <div class="mt-6 has-text-centered">
-                        <button class="button has-color-white has-background-primary" id="news-sign-up-button">Report issue</button>
+                        <button
+                            class="button has-color-white has-background-primary"
+                            id="news-sign-up-button">Report issue</button
+                        >
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
-
 </nav>
 
 <style>
-    .modal-content{
+    .modal-content {
         border-radius: 10px;
     }
 
-    .label.required::after{
+    .label.required::after {
         content: " *";
         color: red;
+    }
+
+    .toggle input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: relative;
+        display: block;
+        cursor: pointer;
+        background-color: #333;
+        transition: 0.4s;
+        width: 200px;
+        height: 120px;
+    }
+
+    .slider:before {
+        content: "";
+        position: absolute;
+        height: 100px;
+        width: 100px;
+        background-color: #fff;
+        transition: 0.4s;
+        top: 10px;
+        left: 10px;
+    }
+
+    input:checked + .slider {
+        background-color: rgb(239, 239, 239);
+        box-shadow: inset 0 0 5px rgb(120, 120, 120);
+    }
+    input:checked + .slider:before {
+        transform: translateX(80px);
+    }
+
+    .slider.round {
+        border-radius: 20px;
+    }
+    .slider.round::before {
+        border-radius: 20px;
+    }
+
+    .slider {
+        width: 50px;
+        height: 25px;
+    }
+
+    .slider:before {
+        width: 18px;
+        height: 18px;
+        top: 3.5px;
+        left: 3.5px;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(25px);
     }
 </style>
 
 <script>
     // Mobile menu toggle
-    const burgerIcon = document.querySelector('#burger');
-    const navbarMenu = document.querySelector('#nav-links');
+    const burgerIcon = document.querySelector("#burger");
+    const navbarMenu = document.querySelector("#nav-links");
 
-    burgerIcon?.addEventListener('click', () => {
-        navbarMenu?.classList.toggle('is-active');
+    burgerIcon?.addEventListener("click", () => {
+        navbarMenu?.classList.toggle("is-active");
     });
 
     // News modal toggle
-    const newsButton = document.querySelector('#news-button');
-    const newsModal = document.querySelector('#news-modal');
-    const newsModalBackground = document.querySelector('#news-modal-background');
+    const newsButton = document.querySelector("#news-button");
+    const newsModal = document.querySelector("#news-modal");
+    const newsModalBackground = document.querySelector(
+        "#news-modal-background",
+    );
 
-    newsButton?.addEventListener('click', () => {
-        newsModal?.classList.add('is-active');
+    newsButton?.addEventListener("click", () => {
+        newsModal?.classList.add("is-active");
     });
-    
-    newsModalBackground?.addEventListener('click', () => {
-        newsModal?.classList.remove('is-active');
+
+    newsModalBackground?.addEventListener("click", () => {
+        newsModal?.classList.remove("is-active");
     });
 
     // Report modal toggle
-    const reportButton = document.querySelector('#report-button');
-    const reportModal = document.querySelector('#report-modal');
-    const reportModalBackground = document.querySelector('#report-modal-background');
+    const reportButton = document.querySelector("#report-button");
+    const reportModal = document.querySelector("#report-modal");
+    const reportModalBackground = document.querySelector(
+        "#report-modal-background",
+    );
 
-    reportButton?.addEventListener('click', () => {
-        reportModal?.classList.add('is-active');
+    reportButton?.addEventListener("click", () => {
+        reportModal?.classList.add("is-active");
     });
 
-    reportModalBackground?.addEventListener('click', () => {
-        reportModal?.classList.remove('is-active');
+    reportModalBackground?.addEventListener("click", () => {
+        reportModal?.classList.remove("is-active");
     });
+
+    // Change variable based on slider state
+    const slider = document.querySelector(".toggle input")! as HTMLInputElement;
+    const sliderIcon = document.querySelector("#slider-icon")!;
+    let lightMode = slider.checked;
+    const htmlDataset = document.querySelector("html")!.dataset;
+    function updateTheme() {
+        sliderIcon.textContent = lightMode ? "light_mode" : "dark_mode";
+        htmlDataset.theme = lightMode ? "light" : "Dark"
+    }
+    slider.addEventListener("change", () => {
+        lightMode = slider.checked;
+        localStorage.setItem("theme", lightMode ? "light" : "dark")
+        updateTheme();
+    });
+    // localstorage
+    const themeInLocalstorage = localStorage.getItem("theme");
+    if(themeInLocalstorage == "light") {
+        lightMode = true;
+        slider.checked = true;
+        updateTheme();
+    }
 </script>
