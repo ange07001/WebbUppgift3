@@ -3,9 +3,51 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title='Contact'>
-    <h1 class="title">Contact</h1>
+    <h1 class="title has-text-centered is-1 mt-4">Contact</h1>
+    <div class="columns is-flex is-justify-content-center">
+        <form  class="column is-6 mx-4">
+            <div class="field">
+                <label class="label required">Name</label>
+                <div class="control">
+                    <input type="text" class="input" placeholder="Anders Andersson">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label required">Email</label>
+                <div class="control">
+                    <input type="email" class="input" placeholder="anders.andersson@sigma.com">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label required">What do you want to contact us about?</label>
+                <div class="control">
+                    <div class="select">
+                        <select>
+                            <option>Select option</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Sponsors">Sponsors</option>
+                            <option value="Requests">Requests</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label required">What is your message?</label>
+                <div class="control">
+                    <textarea class="textarea"/>
+                </div>
+            </div>
+            <div class="field has-text-centered my-5">
+                <input type="submit"  class="button has-background-primary is-medium" value="Send">
+            </div>
+        </form>
+    </div>
 </Layout>
 
 <style>
-
+    .label.required::after {
+        content: " *";
+        color: red;
+    }
 </style>
