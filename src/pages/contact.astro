@@ -8,21 +8,27 @@ import Layout from '../layouts/Layout.astro';
         <form  class="column is-6 mx-4">
             <div class="field">
                 <label class="label required">Name</label>
-                <div class="control">
-                    <input type="text" class="input" placeholder="Anders Andersson">
+                <div class="control has-icons-left">
+                    <input type="text" class="input" placeholder="Anders Andersson" required>
+                    <span class="icon is-small is-left">
+                        <i class="material-icons">person</i>
+                    </span>
                 </div>
             </div>
             <div class="field">
                 <label class="label required">Email</label>
-                <div class="control">
-                    <input type="email" class="input" placeholder="anders.andersson@sigma.com">
+                <div class="control has-icons-left">
+                    <input type="email" class="input" placeholder="anders.andersson@sigma.com" required>
+                    <span class="icon is-small is-left">
+                        <i class="material-icons">email</i>
+                    </span>
                 </div>
             </div>
             <div class="field">
                 <label class="label required">What do you want to contact us about?</label>
                 <div class="control">
                     <div class="select">
-                        <select>
+                        <select id="contact-subject">
                             <option>Select option</option>
                             <option value="Legal">Legal</option>
                             <option value="Sponsors">Sponsors</option>
@@ -32,10 +38,55 @@ import Layout from '../layouts/Layout.astro';
                     </div>
                 </div>
             </div>
+
+            <!-- Optionally displayed fields -->
+            <div id="legal-fields" class="is-hidden">
+                <hr>
+                <div class="field">
+                    <label class="label">What is the nature of your legal concern?</label>
+                    <div class="control">
+                        <input type="text" class="input" placeholder="e.g., breach of contract or dispute details">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">When did the incident occur?</label>
+                    <div class="control">
+                        <input type="date" class="input">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Have you already spoken with legal counsel?</label>
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                                <option value="">Select option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">How urgent is your issue?</label>
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                                <option value="">Select option</option>
+                                <option value="Not urgent">Not urgent</option>
+                                <option value="Moderately urgent">Moderately urgent</option>
+                                <option value="Urgent">Urgent</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+
             <div class="field">
                 <label class="label required">What is your message?</label>
                 <div class="control">
-                    <textarea class="textarea"/>
+                    <textarea class="textarea" required/>
                 </div>
             </div>
             <div class="field has-text-centered my-5">
@@ -51,3 +102,18 @@ import Layout from '../layouts/Layout.astro';
         color: red;
     }
 </style>
+
+<script>
+    const subjectSelect = document.querySelector('#contact-subject')!;
+    const legalFields = document.querySelector('#legal-fields')!;
+
+
+    subjectSelect.addEventListener("change", (event) => {
+        const subjectOption = (event.target as HTMLSelectElement).value;
+        legalFields.classList.add("is-hidden")
+        
+        if(subjectOption === "Legal") {
+            legalFields.classList.remove("is-hidden")
+        }
+    });
+</script>
