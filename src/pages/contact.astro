@@ -82,6 +82,41 @@ import Layout from '../layouts/Layout.astro';
                 <hr>
             </div>
 
+            <div id="sponsors-fields" class="is-hidden">
+                <hr>
+                <div class="field">
+                    <label class="label">What kind of sponsorship are you interested in?</label>
+                    <div class="control">
+                        <input type="text" class="input">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Can you provide details about your organization or event?</label>
+                    <div class="control">
+                        <textarea class="textarea"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">What are your goals for this sponsorship?</label>
+                    <div class="control">
+                        <textarea class="textarea"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">What budget range are you considering?</label>
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                                <option value="">Select option</option>
+                                <option value="Less than 1000$">Less than 1000$</option>
+                                <option value="1000$-5000$">1000$-5000$</option>
+                                <option value="More than 5000$">More than 5000$</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
 
             <div class="field">
                 <label class="label required">What is your message?</label>
@@ -106,14 +141,18 @@ import Layout from '../layouts/Layout.astro';
 <script>
     const subjectSelect = document.querySelector('#contact-subject')!;
     const legalFields = document.querySelector('#legal-fields')!;
+    const sponsorsFields = document.querySelector('#sponsors-fields')!;
 
 
     subjectSelect.addEventListener("change", (event) => {
         const subjectOption = (event.target as HTMLSelectElement).value;
-        legalFields.classList.add("is-hidden")
+        legalFields.classList.add("is-hidden");
+        sponsorsFields.classList.add("is-hidden");
         
         if(subjectOption === "Legal") {
-            legalFields.classList.remove("is-hidden")
+            legalFields.classList.remove("is-hidden");
+        } else if (subjectOption === "Sponsors") {
+            sponsorsFields.classList.remove("is-hidden");
         }
     });
 </script>
