@@ -118,6 +118,71 @@ import Layout from '../layouts/Layout.astro';
                 <hr>
             </div>
 
+            <div id="requests-fields" class="is-hidden">
+                <hr>
+                <div class="field">
+                    <label class="label">What specific request are you making?</label>
+                    <div class="control">
+                        <input type="text" class="input">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">How can we best assist you with your request?</label>
+                    <div class="control">
+                        <input type="text" class="input">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Do you have a preferred timeline for this request?</label>
+                    <div class="control">
+                        <input type="text" class="input">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Are there any additional details you can provide?</label>
+                    <div class="control">
+                        <textarea class="textarea"></textarea>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            <div id="other-fields" class="is-hidden">
+                <hr>
+                <div class="field">
+                    <label class="label">Describe your inquiry in detail</label>
+                    <div class="control">
+                        <textarea class="textarea"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Is there any context or background information you can share?</label>
+                    <div class="control">
+                        <textarea class="textarea">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">What outcome would you like form this inquiry?</label>
+                    <div class="control">
+                        <input type="text" class="input">
+                    </div>
+                </div>
+                <div class="file has-name my-6">
+                    <label class="file-label">
+                        <input class="file-input" type="file" name="resume" />
+                        <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label"> Choose a file… </span>
+                        </span>
+                        <span class="file-name"> Screen Shot 2017-07-29 at 15.54.25.png </span>
+                    </label>
+                </div>
+                <hr>
+            </div>
+
             <div class="field">
                 <label class="label required">What is your message?</label>
                 <div class="control">
@@ -142,17 +207,24 @@ import Layout from '../layouts/Layout.astro';
     const subjectSelect = document.querySelector('#contact-subject')!;
     const legalFields = document.querySelector('#legal-fields')!;
     const sponsorsFields = document.querySelector('#sponsors-fields')!;
-
+    const requestsFields = document.querySelector('#requests-fields')!;
+    const otherFields = document.querySelector('#other-fields')!;
 
     subjectSelect.addEventListener("change", (event) => {
         const subjectOption = (event.target as HTMLSelectElement).value;
         legalFields.classList.add("is-hidden");
         sponsorsFields.classList.add("is-hidden");
+        requestsFields.classList.add("is-hidden");
+        otherFields.classList.add("is-hidden");
         
         if(subjectOption === "Legal") {
             legalFields.classList.remove("is-hidden");
         } else if (subjectOption === "Sponsors") {
             sponsorsFields.classList.remove("is-hidden");
+        } else if (subjectOption === "Requests") {
+            requestsFields.classList.remove("is-hidden");
+        } else if (subjectOption === "Other") {
+            otherFields.classList.remove("is-hidden");
         }
     });
 </script>
