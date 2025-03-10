@@ -4,28 +4,57 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Stats">
     <h1 class="title has-text-centered is-1 mt-4">Stats</h1>
-    <div style="width: 500px;">
-        <canvas id="chart"></canvas>
+    <div class="columns is-multiline snake">
+        <div class="column is-6">
+            <canvas id="snake-chart"></canvas>
+        </div>
+        <div class="column is-6">
+            <div class="columns">
+                <div class="column is-half has-text-centered">
+                    <h3 class="title">Average Score: 1.2</h3>
+                </div>
+                <div class="column is-half has-text-centered">
+                    <h3 class="title">Highest Score: 21</h3>
+                </div>
+            </div>
+        </div>
     </div>
 </Layout>
 
 <script>
+    let snakeScores: number[] = [];
+    let snakeScoreTimes: string[] = [];
     import Chart from "chart.js/auto";
-    const ctx = document.querySelector("#chart") as HTMLCanvasElement;
+    const snakeCtx = document.querySelector(
+        "#snake-chart",
+    ) as HTMLCanvasElement;
+
+    const snakeDataStr = localStorage.getItem("snakeData");
+    if (snakeDataStr !== null) {
+        const snakeDataObj = JSON.parse(snakeDataStr);
+        snakeScores = snakeDataObj.scores;
+        snakeScoreTimes = snakeDataObj.scoreTimes;
+    } else {
+        snakeScores = [];
+        snakeScoreTimes = [];
+    }
+
+    const latestSnakeScores = snakeScores.slice(-10);
+    const latestSnakeScoreTimes = snakeScoreTimes.slice(-10);
 
     const gridColor = getComputedStyle(document.body).color;
     const gridColorLowOpacity = gridColor
         .replace("rgb(", "rgba(")
         .replace(")", ", 0.2)");
 
-    new Chart(ctx, {
+    new Chart(snakeCtx, {
         type: "line",
         data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            labels: latestSnakeScoreTimes,
             datasets: [
                 {
-                    label: "# of Votes",
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: "Latest scores on snake",
+                    data: latestSnakeScores,
                     borderWidth: 1,
                 },
             ],

@@ -117,13 +117,12 @@
                 unitSize;
             return num;
         }
-        
+
         do {
             foodX = randFood(0, gameWidth - unitSize);
             foodY = randFood(0, gameHeight - unitSize);
-        } while (snake.some(part => part.x === foodX && part.y === foodY));
-        
-    }   
+        } while (snake.some((part) => part.x === foodX && part.y === foodY));
+    }
     function paintFood() {
         ctx.fillStyle = foodColor;
         ctx.fillRect(foodX, foodY, unitSize, unitSize);
@@ -225,7 +224,19 @@
         snakeModal?.classList.add("is-active");
 
         snakeModalScore.textContent = "Your score: " + score + " points.";
-        running = false;
+
+        const snakeDataStr = localStorage.getItem("snakeData")!;
+        let snakeDataObj: { scores: number[]; scoreTimes: string[] };
+        if (snakeDataStr !== null) {
+            snakeDataObj = JSON.parse(snakeDataStr);
+        } else {
+            snakeDataObj = { scores: [], scoreTimes: [] };
+        }
+
+        snakeDataObj.scores.push(score);
+        snakeDataObj.scoreTimes.push(new Date().toLocaleString());
+
+        localStorage.setItem("snakeData", JSON.stringify(snakeDataObj));
     }
     function resetGame() {
         score = 0;
