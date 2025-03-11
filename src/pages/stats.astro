@@ -6,23 +6,28 @@ import Layout from "../layouts/Layout.astro";
     <h1 class="title has-text-centered is-1 mt-4">Stats</h1>
     <div class="section">
         <h2 class="has-text-centered title has-text-primary">Snake Stats</h2>
-        <div class="columns is-multiline">
-            <div class="column is-6">
-                <canvas id="snake-chart"></canvas>
-            </div>
-            <div class="column is-6">
-                <div class="columns is-centered">
-                    <div class="column is-half is-flex is-justify-content-center py-3">
-                        <h3 class="title">Average Score: <strong class="has-text-primary" id="snake-average-score-text"></strong></h3>
-                    </div>
-                    <div class="column is-half is-flex is-justify-content-center py-3">
-                        <h3 class="title">Highest Score: <strong class="has-text-primary" id="snake-high-score-text"></strong></h3>
-                    </div>
+        <div class="columns is-centered">
+            <div class="column is-12-mobile is-10-tablet is-8-desktop is-half-widescreen mx-3">
+                <div class="box">
+                    <canvas id="snake-chart"></canvas>
                 </div>
-                <div class="columns is-centered py-3">
-                    <div class="column is-half has-text-centered">
-                        <h3 class="title">Total Food Eaten: <strong class="has-text-primary" id="snake-total-food-text"></strong></h3>
-                    </div>
+                <div class="box">
+                    <table class="table is-fullwidth is-hoverable">
+                        <tbody>
+                            <tr>
+                                <th>Average Score</th>
+                                <td id="snake-average-score-text" class="has-text-primary"></td>
+                            </tr>
+                            <tr>
+                                <th>Highest Score</th>
+                                <td id="snake-high-score-text" class="has-text-primary"></td>
+                            </tr>
+                            <tr>
+                                <th>Total Food Eaten</th>
+                                <td id="snake-total-food-text" class="has-text-primary"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -46,7 +51,6 @@ import Layout from "../layouts/Layout.astro";
 
     let snakeScores: number[] = [];
     let snakeScoreTimes: string[] = [];
-import { ACTION_ERROR_CODES } from "astro:actions";
     import Chart from "chart.js/auto";
     const snakeCtx = document.querySelector(
         "#snake-chart",
@@ -62,8 +66,8 @@ import { ACTION_ERROR_CODES } from "astro:actions";
         snakeScoreTimes = [];
     }
 
-    const latestSnakeScores = snakeScores.slice(-10);
-    const latestSnakeScoreTimes = snakeScoreTimes.slice(-10);
+    const latestSnakeScores = snakeScores.slice(-20);
+    const latestSnakeScoreTimes = snakeScoreTimes.slice(-20);
 
     const gridColor = getComputedStyle(document.body).color;
     const gridColorLowOpacity = gridColor
