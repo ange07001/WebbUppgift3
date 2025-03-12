@@ -2,4 +2,88 @@
 
 ---
 
-<div class="container"></div>
+<div class="container columns is-centered">
+    <div id="minesweeper-board"></div>
+</div>
+
+<script>
+
+    const BOARD_SIZE = 10;
+    const NUMBER_OF_MINES = 1;
+    const GAME_SIZE = 500;
+
+    function createBoard(boardSize: number, numberOfMines: number){
+        const board = [];
+        for (let x = 0; x < boardSize; x++) {
+            const row = [];
+            for (let y = 0; y < boardSize; y++) {
+                const element = document.createElement("div");
+                updateTile(element,"hidden");
+                element.classList.add("tile-hidden"); // Initial state
+                const tile = {
+                    element,
+                    x,
+                    y
+                }
+                row.push(tile)
+            }
+        board.push(row)
+        }
+    return board
+    };
+
+    function updateTile(element: HTMLElement, status: string) {
+        switch(status) {
+            case "hidden":
+                element.style.backgroundColor = "#BBB";
+                element.style.cursor = "pointer";
+                break;
+            case "mine":
+                element.style.backgroundColor = "red";
+                element.style.cursor = "default";
+                break;
+            case "number":
+                element.style.backgroundColor = "transparent";
+                element.style.cursor = "default";
+                break;
+            case "marked":
+                element.style.backgroundColor = "yellow";
+                element.style.cursor = "pointer";
+                break;
+        }
+    }
+
+    const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES);
+    const boardElement = document.querySelector('#minesweeper-board')! as HTMLElement;
+    board.forEach(row =>{
+        row.forEach(tile => {
+            boardElement.append(tile.element);
+        });
+    });
+    
+    boardElement.style.setProperty("--size", BOARD_SIZE.toString());
+    boardElement.style.setProperty("--block-size", Math.round(GAME_SIZE/BOARD_SIZE).toString() + "px");
+    
+    function updateBoardSize() {
+        const containerWidth = boardElement.parentElement?.clientWidth || GAME_SIZE;
+        const maxSize = Math.min(containerWidth - 20, GAME_SIZE);
+        const newBlockSize = Math.floor((maxSize - (BOARD_SIZE + 1) * 4) / BOARD_SIZE);
+        
+        boardElement.style.setProperty("--block-size", newBlockSize + "px");
+    }
+    
+    updateBoardSize();
+    window.addEventListener('resize', updateBoardSize);
+
+</script>
+
+<style>
+    #minesweeper-board {
+    display: inline-grid;
+    padding: 10px;
+    grid-template-columns: repeat(var(--size), var(--block-size));
+    grid-template-rows: repeat(var(--size), var(--block-size));
+    gap: 4px;
+    background-color: #777;
+    }
+</style>
