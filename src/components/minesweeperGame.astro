@@ -1,7 +1,7 @@
 ---
 
 ---
-
+<h3 class="title has-text-centered is-size-4">Mines left: <span class="has-text-primary" id="mines-left-text"></span></h3>
 <div class="container columns is-centered">
     <div id="minesweeper-board"></div>
 </div>
@@ -9,21 +9,24 @@
 <script>
 
     const BOARD_SIZE = 10;
-    const NUMBER_OF_MINES = 1;
+    const NUMBER_OF_MINES = 10;
     const GAME_SIZE = 500;
+
 
     function createBoard(boardSize: number, numberOfMines: number){
         const board = [];
+        const minePositions = getMinePos(boardSize, numberOfMines);
+        console.log(minePositions);
         for (let x = 0; x < boardSize; x++) {
             const row = [];
             for (let y = 0; y < boardSize; y++) {
                 const element = document.createElement("div");
                 updateTile(element,"hidden");
-                element.classList.add("tile-hidden"); // Initial state
                 const tile = {
                     element,
                     x,
-                    y
+                    y,
+                    mine: minePositions.some(posMatch.bind(null, {x, y})),
                 }
                 row.push(tile)
             }
@@ -33,6 +36,8 @@
     };
 
     function updateTile(element: HTMLElement, status: string) {
+        element.dataset.status = status;
+        
         switch(status) {
             case "hidden":
                 element.style.backgroundColor = "#BBB";
@@ -53,14 +58,66 @@
         }
     }
 
+    function getTileStatus(tile: { element: HTMLElement, x: number, y: number, mine: boolean }) {
+        return tile.element.dataset.status;
+    }
+
+    function getMinePos(boardSize: number, numberOfMines: number) {
+        const positions: {x: number, y: number}[] = [];
+        while (positions.length < numberOfMines) {
+            const position = {
+                x: random(0,boardSize),
+                y: random(0,boardSize),
+            }
+
+            if (!positions.some(pos => posMatch(pos, position))) {
+                positions.push(position);
+            }
+        }
+        return positions;
+    }
+
+    function posMatch(a: {x: number, y: number}, b: {x: number, y: number}) {
+        return a.x === b.x && a.y === b.y;
+    }
+
+
+    function random(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function markTile(tile: { element: HTMLElement, x: number, y: number, mine: boolean }) {
+        if (getTileStatus(tile) !== "hidden" && getTileStatus(tile) !== "marked") {
+            return;
+        } else {
+            if (getTileStatus(tile) === "marked") {
+                updateTile(tile.element, "hidden");
+            } else {
+                updateTile(tile.element, "marked")
+            }
+        }
+
+    }
+
     const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES);
     const boardElement = document.querySelector('#minesweeper-board')! as HTMLElement;
+    const minesLeftText = document.querySelector('#mines-left-text')! as HTMLElement;
+
+    minesLeftText.textContent = NUMBER_OF_MINES.toString();
+
     board.forEach(row =>{
         row.forEach(tile => {
             boardElement.append(tile.element);
+            tile.element.addEventListener('click', () => {
+
+            })
+            tile.element.addEventListener('contextmenu', e => {
+                e.preventDefault()
+                markTile(tile)
+            })
         });
     });
-    
+
     boardElement.style.setProperty("--size", BOARD_SIZE.toString());
     boardElement.style.setProperty("--block-size", Math.round(GAME_SIZE/BOARD_SIZE).toString() + "px");
     
