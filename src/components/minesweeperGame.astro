@@ -9,6 +9,15 @@
     <div id="minesweeper-board"></div>
 </div>
 
+<div class="modal" id="minesweeper-modal">
+    <div class="modal-background" id="minesweeper-modal-background"></div>
+    <div class="modal-content px-5 py-5 has-background">
+        <h2 class="title has-text-centered">YOU LOST!</h2>
+        <p class="has-text-centered is-size-4 title">Your score is: <span class="has-text-primary">26</span></p>
+        <p class="has-text-centered is-size-4 title">Time is: <span class="has-text-primary">26</span></p>
+    </div>
+</div>
+
 <script>
     const BOARD_SIZE = 10;
     const NUMBER_OF_MINES = 10;
@@ -227,11 +236,11 @@
         }
 
         if (win) {
-
+            minesweeperModal.classList.add("is-active");
         }
 
         if (lose) {
-            
+            minesweeperModal.classList.add("is-active");
         }
     };
 
@@ -300,6 +309,15 @@
 
     updateBoardSize();
     window.addEventListener("resize", updateBoardSize);
+
+    // Minesweeper Modal
+    const minesweeperModalBackground = document.querySelector('#minesweeper-modal-background')!;
+    const minesweeperModal = document.querySelector('#minesweeper-modal')!;
+
+    minesweeperModalBackground.addEventListener('click', () => {
+        minesweeperModal.classList.remove("is-active");
+    })
+
 </script>
 
 <style>
@@ -311,4 +329,9 @@
         gap: 4px;
         background-color: #777;
     }
+
+    .modal-content {
+        border-radius: 10px;
+    }
+
 </style>
