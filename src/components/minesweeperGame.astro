@@ -8,18 +8,25 @@
     <h3 class="title has-text-centered column is-3 is-size-4">Time: <span class="has-text-primary" id="current-time-text">00:00</span></h3>
 </div>
 
-<div class="container columns is-centered">
-    <div id="minesweeper-board"></div>
-</div>
-<div class="columns is-centered py-5">
-    <button class="button has-background-primary" id="reset-button">Reset</button>
+<div class="container">
+    <div class="columns is-centered">
+        <div class="column is-flex is-justify-content-center">
+            <div id="minesweeper-board"></div>
+        </div>
+    </div>
+    
+    <div class="columns is-centered py-5">
+        <div class="column is-flex is-justify-content-center">
+            <button class="button has-background-primary" id="reset-button">Reset</button>
+        </div>
+    </div>
 </div>
 
 
 <div class="modal" id="minesweeper-win-modal">
     <div class="modal-background" id="minesweeper-win-modal-background"></div>
     <div class="modal-content px-5 py-5 has-background">
-        <h2 class="title has-text-centered">YOU WON!</h2>
+        <h2 class="title has-text-centered has-text-primary">YOU WON!</h2>
         <p class="has-text-centered is-size-4 title">Your score is: <span class="has-text-primary" id="minesweeper-score-text"></span></p>
         <p class="has-text-centered is-size-4 title">Your time is: <span class="has-text-primary" id="minesweeper-win-time-text"></span></p>
     </div>
@@ -28,7 +35,7 @@
 <div class="modal" id="minesweeper-lose-modal">
     <div class="modal-background" id="minesweeper-lose-modal-background"></div>
     <div class="modal-content px-5 py-5 has-background">
-        <h2 class="title has-text-centered">YOU LOST!</h2>
+        <h2 class="title has-text-centered has-text-primary">YOU LOST!</h2>
         <p class="has-text-centered is-size-4 title">Your time is: <span class="has-text-primary" id="minesweeper-lose-time-text"></span></p>
     </div>
 </div>
