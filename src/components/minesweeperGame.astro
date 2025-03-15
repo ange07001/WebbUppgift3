@@ -1,20 +1,35 @@
 ---
 
 ---
+<div class="columns">
+    <h3 class="title has-text-centered column is-3 is-offset-3 is-size-4">
+        Mines left: <span class="has-text-primary" id="mines-left-text"></span>
+    </h3>
+    <h3 class="title has-text-centered column is-3 is-size-4">Time: <span class="has-text-primary" id="current-time-text">00:00</span></h3>
+</div>
 
-<h3 class="title has-text-centered is-size-4">
-    Mines left: <span class="has-text-primary" id="mines-left-text"></span>
-</h3>
 <div class="container columns is-centered">
     <div id="minesweeper-board"></div>
 </div>
+<div class="columns is-centered py-5">
+    <button class="button has-background-primary" id="reset-button">Reset</button>
+</div>
 
-<div class="modal" id="minesweeper-modal">
-    <div class="modal-background" id="minesweeper-modal-background"></div>
+
+<div class="modal" id="minesweeper-win-modal">
+    <div class="modal-background" id="minesweeper-win-modal-background"></div>
+    <div class="modal-content px-5 py-5 has-background">
+        <h2 class="title has-text-centered">YOU WON!</h2>
+        <p class="has-text-centered is-size-4 title">Your score is: <span class="has-text-primary" id="minesweeper-score-text"></span></p>
+        <p class="has-text-centered is-size-4 title">Your time is: <span class="has-text-primary" id="minesweeper-win-time-text"></span></p>
+    </div>
+</div>
+
+<div class="modal" id="minesweeper-lose-modal">
+    <div class="modal-background" id="minesweeper-lose-modal-background"></div>
     <div class="modal-content px-5 py-5 has-background">
         <h2 class="title has-text-centered">YOU LOST!</h2>
-        <p class="has-text-centered is-size-4 title">Your score is: <span class="has-text-primary">26</span></p>
-        <p class="has-text-centered is-size-4 title">Time is: <span class="has-text-primary">26</span></p>
+        <p class="has-text-centered is-size-4 title">Your time is: <span class="has-text-primary" id="minesweeper-lose-time-text"></span></p>
     </div>
 </div>
 
@@ -23,10 +38,48 @@
     const NUMBER_OF_MINES = 10;
     const GAME_SIZE = 500;
 
+    let gameStarted = false;
+    let gameTime = 0;
+    let gameTimer: number | null = null;
+
+    let isFirstClick = true;
+
+    function startTimer() {
+        if (gameStarted) return;
+        
+        gameStarted = true;
+        gameTime = 0;
+
+        gameTimer = window.setInterval(() => {
+            gameTime++;
+            updateTimerDisplay();
+        }, 1000);
+    };
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(gameTime / 60);
+        const seconds = gameTime % 60;
+
+        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        document.querySelector('#current-time-text')!.textContent = formattedTime;
+    };
+
+    function stopTimer() {
+        if (gameTimer !== null) {
+            clearInterval(gameTimer);
+            gameTimer = null;
+        }
+    };
+
+    function getFinalTime() {
+        const minutes = Math.floor(gameTime / 60);
+        const seconds = gameTime % 60;
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
     function createBoard(boardSize: number, numberOfMines: number) {
         const board = [];
-        const minePositions = getMinePos(boardSize, numberOfMines);
-        console.log(minePositions);
         for (let x = 0; x < boardSize; x++) {
             const row = [];
             for (let y = 0; y < boardSize; y++) {
@@ -36,14 +89,14 @@
                     element,
                     x,
                     y,
-                    mine: minePositions.some(posMatch.bind(null, { x, y })),
+                    mine: false,
                 };
                 row.push(tile);
             }
             board.push(row);
         }
         return board;
-    }
+    };
 
     function updateTile(element: HTMLElement, status: string) {
         element.dataset.status = status;
@@ -97,20 +150,48 @@
         return tile.element.dataset.status;
     }
 
-    function getMinePos(boardSize: number, numberOfMines: number) {
-        const positions: { x: number; y: number }[] = [];
-        while (positions.length < numberOfMines) {
+    function placeMines(board: any[][], firstClickedTile: any, numberOfMines: number) {
+        const boardSize = board.length;
+        const minePositions: { x: number; y: number }[] = [];
+
+        while (minePositions.length < numberOfMines) {
             const position = {
-                x: random(0, boardSize),
-                y: random(0, boardSize),
+                x: random(0, boardSize -1),
+                y: random(0, boardSize -1),
             };
 
-            if (!positions.some((pos) => posMatch(pos, position))) {
-                positions.push(position);
+            if (
+                Math.abs(position.x - firstClickedTile.x) <= 1 && 
+                Math.abs(position.y - firstClickedTile.y) <= 1
+            ) {
+                continue;
+            }
+
+            if (!minePositions.some((pos) => posMatch(pos, position))) {
+                minePositions.push(position);
             }
         }
-        return positions;
+
+        for (let i = 0; i < minePositions.length; i++) {
+            const {x, y} = minePositions[i];
+            board[x][y].mine = true;
+        }
     }
+
+    function getMinePos(boardSize: number, numberOfMines: number) {
+    const positions: { x: number; y: number }[] = [];
+    while (positions.length < numberOfMines) {
+        const position = {
+            x: random(0, boardSize - 1),
+            y: random(0, boardSize - 1),
+        };
+
+        if (!positions.some((pos) => posMatch(pos, position))) {
+            positions.push(position);
+        }
+    }
+    return positions;
+}
 
     function posMatch(
         a: { x: number; y: number },
@@ -196,20 +277,18 @@
 
         updateTile(tile.element, "number");
         const adjacentTiles = getNearbyTiles(board, tile);
-        const mines = adjacentTiles.filter((t) => t.mine); // Fixed: Check for actual mines
+        const mines = adjacentTiles.filter((t) => t.mine);
 
         if (mines.length === 0) {
             adjacentTiles.forEach(revealTile.bind(null, board));
         } else {
             tile.element.textContent = mines.length.toString();
 
-            // Center the number in the tile
             tile.element.style.display = "flex";
             tile.element.style.justifyContent = "center";
             tile.element.style.alignItems = "center";
             tile.element.style.fontWeight = "bold";
 
-            // Add color based on number (classic Minesweeper style)
             const colors = [
                 "blue",
                 "green",
@@ -231,27 +310,41 @@
         const lose = checkLose(board);
 
         if (win || lose) {
+            stopTimer();
             boardElement.addEventListener('click', stopProp, {capture: true});
             boardElement.addEventListener('contextmenu', stopProp, {capture: true});
         }
 
         if (win) {
-            minesweeperModal.classList.add("is-active");
+            document.querySelector('#minesweeper-win-time-text')!.textContent = getFinalTime();
+            document.querySelector('#minesweeper-score-text')!.textContent = calculateScore().toString();
+            minesweeperWinModal.classList.add("is-active");
         }
 
         if (lose) {
-            minesweeperModal.classList.add("is-active");
+            document.querySelector('#minesweeper-lose-time-text')!.textContent = getFinalTime();
+            minesweeperLoseModal.classList.add("is-active");
+            board.forEach(row => {
+                row.forEach(tile => {
+                    if (getTileStatus(tile) === "marked") markTile(tile);
+                    if (tile.mine) revealTile(board, tile);
+                });
+            });
         }
+    };
+
+    function calculateScore() {
+        return Math.round((BOARD_SIZE * NUMBER_OF_MINES) / gameTime * 100);
     };
 
     function stopProp(e: Event) {
         e.stopImmediatePropagation()
-    }
+    };
 
     function checkWin(board: any[][]): boolean {
         return board.every(row => {
             return row.every(tile => {
-                return tile.mine || getTileStatus(tile) !== "hidden";
+                return getTileStatus(tile) === "number" || (tile.mine && (getTileStatus(tile) === "hidden" || getTileStatus(tile) === "marked"));
             });
         });
     };
@@ -279,6 +372,12 @@
         row.forEach((tile) => {
             boardElement.append(tile.element);
             tile.element.addEventListener("click", () => {
+                if (isFirstClick) {
+                    isFirstClick = false;
+                    placeMines(board, tile, NUMBER_OF_MINES);
+                    startTimer();
+                }
+                
                 revealTile(board, tile);
                 CheckGameEnd();
             });
@@ -305,19 +404,77 @@
         );
 
         boardElement.style.setProperty("--block-size", newBlockSize + "px");
-    }
+    };
+
+    const resetButton = document.querySelector('#reset-button')!;
+    resetButton.addEventListener('click', resetGame);
+
+    function resetGame() {
+        stopTimer();
+
+        gameStarted = false;
+        gameTime = 0;
+
+        isFirstClick = true;
+
+        while (boardElement.firstChild) {
+            boardElement.removeChild(boardElement.firstChild);
+        }
+
+        document.querySelector('#current-time-text')!.textContent = "00:00";
+
+        listMinesLeft();
+
+        boardElement.removeEventListener('click', stopProp, {capture: true});
+        boardElement.removeEventListener('contextmenu', stopProp, {capture: true});
+        
+        const newBoard = createBoard(BOARD_SIZE, NUMBER_OF_MINES);
+
+        board.length = 0;
+        Array.prototype.push.apply(board, newBoard);
+
+        minesLeftText.textContent = NUMBER_OF_MINES.toString();
+
+        board.forEach((row) => {
+            row.forEach((tile) => {
+                boardElement.append(tile.element);
+                tile.element.addEventListener("click", () => {
+                    if (isFirstClick) {
+                        isFirstClick = false;
+                        placeMines(board, tile, NUMBER_OF_MINES);
+                        startTimer();
+                    }
+                    
+                    revealTile(board, tile);
+                    CheckGameEnd();
+                });
+                tile.element.addEventListener("contextmenu", (e) => {
+                    e.preventDefault();
+                    markTile(tile);
+                    listMinesLeft();
+                });
+            });
+        });
+    };
 
     updateBoardSize();
     window.addEventListener("resize", updateBoardSize);
 
-    // Minesweeper Modal
-    const minesweeperModalBackground = document.querySelector('#minesweeper-modal-background')!;
-    const minesweeperModal = document.querySelector('#minesweeper-modal')!;
+    // Minesweeper Win Modal
+    const minesweeperWinModalBackground = document.querySelector('#minesweeper-win-modal-background')!;
+    const minesweeperWinModal = document.querySelector('#minesweeper-win-modal')!;
 
-    minesweeperModalBackground.addEventListener('click', () => {
-        minesweeperModal.classList.remove("is-active");
-    })
+    minesweeperWinModalBackground.addEventListener('click', () => {
+        minesweeperWinModal.classList.remove("is-active");
+    });
 
+    // Minesweeper Lose Modal
+    const minesweeperLoseModalBackground = document.querySelector('#minesweeper-lose-modal-background')!;
+    const minesweeperLoseModal = document.querySelector('#minesweeper-lose-modal')!;
+
+    minesweeperLoseModalBackground.addEventListener('click', () => {
+        minesweeperLoseModal.classList.remove("is-active");
+    });
 </script>
 
 <style>
