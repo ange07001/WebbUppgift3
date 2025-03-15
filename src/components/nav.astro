@@ -51,13 +51,14 @@ import GameImage from "../assets/game.png";
         <div class="modal-background" id="news-modal-background"></div>
         <div class="modal-content py-5 px-5 has-background">
             <h3 class="title has-text-centered">Sign up for Newsletter</h3>
-            <form>
+            <form action="https://formsubmit.co/your@email.com" method="POST">
                 <div class="field">
                     <label class="label required">Name</label>
                     <div class="control has-icons-left">
                         <input
                             type="text"
                             class="input"
+                            name="name"
                             placeholder="Anders Andersson"
                             required
                         />
@@ -72,7 +73,7 @@ import GameImage from "../assets/game.png";
                         <input
                             type="email"
                             class="input"
-                            name="Email"
+                            name="email"
                             placeholder="anders.andersson@sigma.com"
                             required
                         />
@@ -84,13 +85,14 @@ import GameImage from "../assets/game.png";
                 <div class="field">
                     <div class="control has-text-centered">
                         <label class="checkbox">
-                            <input type="checkbox" required />
+                            <input type="checkbox" name="terms_agreement" required />
                             I agree to the <a href="">terms & conditions</a>.
                         </label>
                     </div>
                 </div>
                 <div class="mt-6 has-text-centered">
                     <button
+                        type="submit"
                         class="button has-color-white has-background-primary"
                         id="news-sign-up-button">Sign up</button
                     >
@@ -104,13 +106,14 @@ import GameImage from "../assets/game.png";
         <div class="modal-background" id="report-modal-background"></div>
         <div class="modal-content py-5 px-5 has-background">
             <h3 class="title has-text-centered">Report an issue</h3>
-            <form>
+            <form action="https://formsubmit.co/your@email.com" method="POST">
                 <div class="field">
                     <label class="label">Name</label>
                     <div class="control has-icons-left">
                         <input
                             type="text"
                             class="input"
+                            name="name"
                             placeholder="Anders Andersson"
                         />
                         <span class="icon is-small is-left">
@@ -123,7 +126,7 @@ import GameImage from "../assets/game.png";
                             <input
                                 type="email"
                                 class="input"
-                                name="Email"
+                                name="email"
                                 placeholder="anders.andersson@sigma.com"
                                 required
                             />
@@ -138,7 +141,7 @@ import GameImage from "../assets/game.png";
                         >
                         <div class="control">
                             <div class="select">
-                                <select>
+                                <select name="issue_type">
                                     <option>Select option</option>
                                     <option value="Snake">Snake</option>
                                     <option value="Minesweeper"
@@ -153,13 +156,13 @@ import GameImage from "../assets/game.png";
                     <div class="field">
                         <label class="label required">Describe the issue</label>
                         <div class="control">
-                            <textarea class="textarea" required></textarea>
+                            <textarea class="textarea" name="issue_description" required></textarea>
                         </div>
                     </div>
                     <div class="field">
                         <div class="control has-text-centered">
                             <label class="checkbox">
-                                <input type="checkbox" required />
+                                <input type="checkbox" name="terms_agreement" required />
                                 I agree to the <a href="">terms & conditions</a
                                 >.
                             </label>
@@ -167,8 +170,9 @@ import GameImage from "../assets/game.png";
                     </div>
                     <div class="mt-6 has-text-centered">
                         <button
+                            type="submit"
                             class="button has-color-white has-background-primary"
-                            id="news-sign-up-button">Report issue</button
+                            id="report-issue-button">Report issue</button
                         >
                     </div>
                 </div>
