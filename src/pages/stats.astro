@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 <Layout title="Stats">
     <h1 class="title has-text-centered is-1 mt-4">Stats</h1>
     <div class="section">
-        <h2 class="has-text-centered title has-text-primary">Snake Stats</h2>
+        <h2 class="has-text-centered title has-text-primary">Snake</h2>
         <div class="columns is-centered">
             <div class="column is-12-mobile is-10-tablet is-8-desktop is-half-widescreen mx-3">
                 <div class="box">
@@ -32,9 +32,44 @@ import Layout from "../layouts/Layout.astro";
             </div>
         </div>
     </div>
+    <div class="section">
+        <h2 class="has-text-centered title has-text-primary">Minesweeper</h2>
+        <div class="columns is-centered">
+            <div class="column is-12-mobile is-10-tablet is-8-desktop is-half-widescreen mx-3">
+                <div class="box">
+                    <canvas id="minesweeper-chart"></canvas>
+                </div>
+                <div class="box">
+                    <table class="table is-fullwidth is-hoverable">
+                        <tbody>
+                            <tr>
+                                <th>Average Score</th>
+                                <td id="minesweeper-average-score-text" class="has-text-primary"></td>
+                            </tr>
+                            <tr>
+                                <th>Highest Score</th>
+                                <td id="minesweeper-high-score-text" class="has-text-primary"></td>
+                            </tr>
+                            <tr>
+                                <th>Total Time Played</th>
+                                <td id="minesweeper-total-time-played-text" class="has-text-primary"></td>
+                            </tr>
+                            <tr>
+                                <th>Longest Game</th>
+                                <td id="minesweeper-longest-game-text" class="has-text-primary"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
 </Layout>
 
 <script>
+    import Chart from "chart.js/auto";
+
     function sum(arr: number[]){
         let sum = 0;
         for(let i = 0; i < arr.length; i++){
@@ -47,14 +82,24 @@ import Layout from "../layouts/Layout.astro";
         return Math.round(sum(arr)/arr.length);
     };
 
+    function formatLongTime(seconds: number): string {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+        
+        if (hours > 0) {
+            return `${hours}h ${minutes}m ${remainingSeconds}s`;
+        } else {
+            return `${minutes}m ${remainingSeconds}s`;
+        }
+    };
 
 
+    // Snake
     let snakeScores: number[] = [];
     let snakeScoreTimes: string[] = [];
-    import Chart from "chart.js/auto";
-    const snakeCtx = document.querySelector(
-        "#snake-chart",
-    ) as HTMLCanvasElement;
+
+    const snakeCtx = document.querySelector("#snake-chart") as HTMLCanvasElement;
 
     const snakeDataStr = localStorage.getItem("snakeData");
     if (snakeDataStr !== null) {
@@ -111,4 +156,71 @@ import Layout from "../layouts/Layout.astro";
     snakeAverageScoreText.textContent = average(snakeScores).toString();
     snakeHighScoreText.textContent = Math.max(...snakeScores).toString();
     snakeTotalFoodText.textContent = sum(snakeScores).toString();
+
+    //Minesweeper
+
+    let minesweeperScores: number[];
+    let minesweeperScoreTimes: string[];
+    let minesweeperPlayTimes: number[];
+
+    const minesweeperCtx = document.querySelector('#minesweeper-chart')! as HTMLCanvasElement;
+    
+    const minesweeperDataStr = localStorage.getItem("minesweeperData");
+
+    if (minesweeperDataStr !== null) {
+        const minesweeperDataObj = JSON.parse(minesweeperDataStr);
+
+        minesweeperScores = minesweeperDataObj.scores;
+        minesweeperScoreTimes = minesweeperDataObj.scoreTimes;
+        minesweeperPlayTimes = minesweeperDataObj.playTimes;
+    } else {
+        minesweeperScores = [];
+        minesweeperScoreTimes = [];
+        minesweeperPlayTimes = [];
+    }
+
+    const latestMinesweeperScores = minesweeperScores.slice(-20);
+    const latestMinesweeperScoreTimes = minesweeperScoreTimes.slice(-20);
+
+    new Chart(minesweeperCtx, {
+        type: "line",
+        data: {
+            labels: latestMinesweeperScoreTimes,
+            datasets: [
+                {
+                    label: "Latest scores on snake",
+                    data: latestMinesweeperScores,
+                    borderWidth: 2,
+                    borderColor: "red",
+                    backgroundColor: "rgba(255, 0, 0, 0.5)",
+                },
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: gridColorLowOpacity,
+                    },
+                },
+                x: {
+                    grid: {
+                        color: gridColorLowOpacity,
+                    },
+                },
+            },
+        },
+    });
+
+    const minesweeperAverageScoreText = document.querySelector('#minesweeper-average-score-text')!;
+    const minesweeperHighScoreText = document.querySelector('#minesweeper-high-score-text')!;
+    const minesweeperTotalTime = document.querySelector('#minesweeper-total-time-played-text')!;
+    const minesweeperLongestGame = document.querySelector('#minesweeper-longest-game-text')!;
+
+    minesweeperAverageScoreText.textContent = average(minesweeperScores).toString();
+    minesweeperHighScoreText.textContent = Math.max(...minesweeperScores).toString();
+    minesweeperTotalTime.textContent = formatLongTime(sum(minesweeperPlayTimes));
+    minesweeperLongestGame.textContent = formatLongTime(Math.max(...minesweeperPlayTimes));
+
 </script>

@@ -313,6 +313,8 @@
             stopTimer();
             boardElement.addEventListener('click', stopProp, {capture: true});
             boardElement.addEventListener('contextmenu', stopProp, {capture: true});
+
+            updateLocalStorage(win, lose);
         }
 
         if (win) {
@@ -355,6 +357,26 @@
                 return tile.mine && getTileStatus(tile) === "mine";
             });
         });
+    };
+
+    function updateLocalStorage(win: boolean, lose: boolean) {
+        const minesweeperDataStr = localStorage.getItem("minesweeperData");
+        let minesweeperDataObj: {scores: number[]; scoreTimes: string[]; playTimes: number[]};
+        if (minesweeperDataStr !== null) {
+            minesweeperDataObj = JSON.parse(minesweeperDataStr);
+        } else {
+            minesweeperDataObj = {scores: [], scoreTimes: [], playTimes: []};
+        }
+
+        if (win){
+            minesweeperDataObj.scores.push(calculateScore());
+            minesweeperDataObj.scoreTimes.push(new Date().toLocaleString());
+        }
+
+        minesweeperDataObj.playTimes.push(gameTime);
+        
+        localStorage.setItem("minesweeperData", JSON.stringify(minesweeperDataObj));
+
     };
 
 
